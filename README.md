@@ -21,7 +21,8 @@ O projeto nasceu da necessidade de ter uma ferramenta privada, offline e à prov
 -   ✈️ **100% Offline e Privado:** Todos os seus dados, regras médicas e históricos são salvos localmente (SQLite) no seu dispositivo. Funciona em qualquer lugar e sem taxas, protegendo sua privacidade.
 -   🔐 **Arquitetura Limpa e Escalável:** A aplicação não é só de fachada, possuindo uma base sólida de "Clean Architecture" com BLoC e separação rigorosa de entidades.
 
-## 🛠️ Tecnologias e Dependências
+
+## �🛠️ Tecnologias e Dependências
 
 -   **Flutter:** Framework principal para o desenvolvimento da interface e do aplicativo multiplataforma.
 -   **Dart:** Linguagem de programação utilizada pelo framework.
