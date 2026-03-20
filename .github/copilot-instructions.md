@@ -1,0 +1,9 @@
+- Esta é uma aplicação Flutter para gerenciamento de medicamentos
+- Use padrões de arquitetura limpa (Clean Architecture) 
+- Implemente BLoC para gerenciamento de estado
+- Use SQLite para persistência local de dados
+- Implemente notificações locais para lembretes
+- Use Google Maps API para localização de farmácias
+- Siga as práticas recomendadas do Flutter
+- Mantenha o código bem documentado e testável
+- Use dependency injection quando apropriado
