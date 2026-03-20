@@ -66,6 +66,7 @@ class ReminderSyncService {
         for (final time in medication.times) {
           final scheduled = _buildDateTime(date, time);
           if (scheduled == null) continue;
+          if (scheduled.isBefore(medication.startDate)) continue;
           desiredTimes.add(DateTime(scheduled.year, scheduled.month,
               scheduled.day, scheduled.hour, scheduled.minute));
         }
@@ -334,3 +335,4 @@ class ReminderSyncService {
     return DoseStatus.overdue;
   }
 }
+

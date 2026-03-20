@@ -408,12 +408,22 @@ class MedicationCard extends StatelessWidget {
       if (next != null) {
         final now = DateTime.now();
         final today = DateTime(now.year, now.month, now.day);
-        if (next.difference(today).inDays >= 1) {
-          return 'Próxima dose amanhã às ${_formatTime(next)}';
+        
+        if (next.year == today.year && next.month == today.month && next.day == today.day) {
+          return 'Próxima dose às ${_formatTime(next)}';
         }
-        return 'Próxima dose às ${_formatTime(next)}';
+        
+        final daysDifference = DateTime(next.year, next.month, next.day).difference(today).inDays;
+        
+        if (daysDifference == 1) {
+          return 'Próxima dose amanhã às ${_formatTime(next)}';
+        } else {
+          final weekdays = ['', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+          final weekdayStr = weekdays[next.weekday];
+          return 'Próxima dose $weekdayStr às ${_formatTime(next)}';
+        }
       }
-      return 'Sem doses hoje';
+      return 'Sem doses previsíveis';
     }
     if (display == DoseStatus.overdue)
       return 'Clique aqui para marcar como tomado';
@@ -441,6 +451,21 @@ class MedicationCard extends StatelessWidget {
     return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
+  int _weekdayToInt(String weekdayPt) {
+    switch (weekdayPt.trim().toLowerCase()) {
+      case 'segunda': return 1;
+      case 'terça':
+      case 'terca': return 2;
+      case 'quarta': return 3;
+      case 'quinta': return 4;
+      case 'sexta': return 5;
+      case 'sábado':
+      case 'sabado': return 6;
+      case 'domingo': return 7;
+      default: return 0;
+    }
+  }
+
   DateTime? _getNextScheduledDateTime() {
     try {
       final now = DateTime.now();
@@ -449,20 +474,28 @@ class MedicationCard extends StatelessWidget {
 
       if (medication.times == null || medication.times.isEmpty) return null;
 
+      List<int> validDays = [];
+      if (medication.frequency == 'weekly' && medication.daysOfWeek.isNotEmpty) {
+        validDays = medication.daysOfWeek.map(_weekdayToInt).where((d) => d > 0).toList();
+      } else {
+        validDays = [1, 2, 3, 4, 5, 6, 7]; // daily
+      }
+
       for (final t in medication.times) {
         final parts = (t.toString()).split(':');
         if (parts.length < 2) continue;
         final hour = int.tryParse(parts[0]) ?? 0;
         final minute = int.tryParse(parts[1]) ?? 0;
 
-        DateTime scheduled =
-            DateTime(today.year, today.month, today.day, hour, minute);
-        if (!scheduled.isAfter(now)) {
+        DateTime scheduled = DateTime(today.year, today.month, today.day, hour, minute);
+        
+        while (!scheduled.isAfter(now) || !validDays.contains(scheduled.weekday)) {
           scheduled = scheduled.add(const Duration(days: 1));
         }
 
-        if (candidate == null || scheduled.isBefore(candidate))
+        if (candidate == null || scheduled.isBefore(candidate)) {
           candidate = scheduled;
+        }
       }
 
       return candidate;
