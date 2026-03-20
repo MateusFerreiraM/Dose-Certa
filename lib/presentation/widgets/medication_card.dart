@@ -29,7 +29,7 @@ class MedicationCard extends StatelessWidget {
     Duration computeTolerance() {
       try {
         final times = medication.times;
-        if (times == null || times.isEmpty) return const Duration(hours: 12);
+        if (times.isEmpty) return const Duration(hours: 12);
         if (times.length < 2) return const Duration(hours: 12);
         final minutes = <int>[];
         for (final t in times) {
@@ -472,7 +472,7 @@ class MedicationCard extends StatelessWidget {
       final today = DateTime(now.year, now.month, now.day);
       DateTime? candidate;
 
-      if (medication.times == null || medication.times.isEmpty) return null;
+      if (medication.times.isEmpty) return null;
 
       List<int> validDays = [];
       if (medication.frequency == 'weekly' && medication.daysOfWeek.isNotEmpty) {

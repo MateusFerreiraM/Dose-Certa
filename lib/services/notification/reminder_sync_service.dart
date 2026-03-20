@@ -1,4 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';
+﻿import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:dose_certa/domain/entities/medication.dart';
 import 'package:dose_certa/domain/entities/medication_dose.dart';
@@ -335,4 +335,3 @@ class ReminderSyncService {
     return DoseStatus.overdue;
   }
 }
-
